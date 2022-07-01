@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js read Excel</title>
+</head>
+<body>
+
+<input id="file" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+<div id="renderHTML"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const fileDOM = document.getElementById("file");
+const renderHTML = document.getElementById("renderHTML");
+
+const reader = new FileReader();
+reader.onload = function(e) {
+  const data = e.target.result;
+  const wb = XLSX.read(data, {
+    type: 'array'
+  });
+  console.log(wb);
+  const sheetName = wb.SheetNames[0];
+  const sheet1 = wb.Sheets[sheetName];
+  const json = XLSX.utils.sheet_to_html(sheet1);
+  const html = XLSX.utils.sheet_to_html(sheet1);
+  console.log(json);
+  renderHTML.innerHTML = html;
+}
+
+fileDOM.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  reader.readAsArrayBuffer(file);
+});
+</script>
+
+</body>
+</html>
